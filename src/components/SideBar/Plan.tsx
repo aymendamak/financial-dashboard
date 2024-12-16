@@ -1,5 +1,3 @@
-import React from "react";
-
 const Plan = () => {
   return (
     <div className="flex sticky top-[calc(100vh_-_48px_-_16px)] flex-col 5-12 border-t px-2 border-stone-300 justify-end text-sm">
