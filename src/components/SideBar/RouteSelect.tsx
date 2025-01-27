@@ -27,9 +27,7 @@ const RouteSelect = () => {
   return (
     <div className="space-y-1">
       <Route icon="home" selected={true} title="Dashboard" />
-      <Route icon="group" selected={false} title="Team" />
       <Route icon="home" selected={false} title="Invoices" />
-      <Route icon="link" selected={false} title="Integration" />
     </div>
   );
 };
