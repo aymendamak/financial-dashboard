@@ -1,42 +1,25 @@
-const sampleData = [
-  {
-    cusId: "C001",
-    sku: "SKU123",
-    date: "2024-12-16",
-    price: 99.99,
-    order: "ORD001",
-  },
-  {
-    cusId: "C002",
-    sku: "SKU456",
-    date: "2024-12-15",
-    price: 149.99,
-    order: "ORD002",
-  },
-  {
-    cusId: "C003",
-    sku: "SKU789",
-    date: "2024-12-14",
-    price: 79.99,
-    order: "ORD003",
-  },
-  {
-    cusId: "C004",
-    sku: "SKU101",
-    date: "2024-12-13",
-    price: 199.99,
-    order: "ORD004",
-  },
-  {
-    cusId: "C005",
-    sku: "SKU202",
-    date: "2024-12-12",
-    price: 59.99,
-    order: "ORD005",
-  },
-];
+import { useEffect, useState } from "react";
+
+interface Transaction {
+  id: number;
+  amount: number;
+  type: string;
+  createdAt: string;
+  description: string;
+}
 
 const RecentTransactions = () => {
+  const [transactions, setTransactions] = useState([]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const response = await fetch("http://localhost:3000/api/v1");
+      const data = await response.json();
+      setTransactions(data);
+    };
+    fetchData();
+  }, []);
+
   return (
     <div className="col-span-12 p-4 rounded border border-stone-300">
       <div className="mb-4 flex items-center justify-between">
@@ -47,15 +30,17 @@ const RecentTransactions = () => {
         </button>
       </div>
 
-      <table className="w-full table auto">
-        <TableHead />
-
-        <tbody>
-          {sampleData.map((item, index) => (
-            <TableRow key={index} {...item} />
-          ))}
-        </tbody>
-      </table>
+      <div className="overflow-x-auto">
+        <table className="table">
+          {/* head */}
+          <TableHead />
+          <tbody>
+            {transactions.map((item: Transaction, index) => (
+              <Transaction key={index} {...item} />
+            ))}
+          </tbody>
+        </table>
+      </div>
     </div>
   );
 };
@@ -64,36 +49,42 @@ const TableHead = () => {
   return (
     <thead>
       <tr className="text-sm font-normal text-stone-500">
-        <th className="text-start p-1.5">Customer ID</th>
-        <th className="text-start p-1.5">SKU</th>
-        <th className="text-start p-1.5">Date</th>
-        <th className="text-start p-1.5">Price</th>
+        <th className="text-start p-1.5">Transaction ID</th>
+        <th className="text-start p-1.5">Amount</th>
+        <th className="text-start p-1.5">Type</th>
+        <th className="text-start p-1.5">Created At</th>
+        <th className="text-start p-1.5">Description</th>
+        <th className="text-start p-1.5">Actions</th>
         <th className="w-8"></th>
       </tr>
     </thead>
   );
 };
 
-const TableRow = ({
-  cusId,
-  sku,
-  date,
-  price,
-  order,
-}: {
-  cusId: string;
-  sku: string;
-  date: string;
-  price: number;
-  order: string;
-}) => {
+const Transaction = ({
+  id,
+  amount,
+  type,
+  createdAt,
+  description,
+}: Transaction) => {
   return (
     <tr className="text-sm font-normal text-stone-500">
-      <td className="px-4 py-2">{cusId}</td>
-      <td className="px-4 py-2">{sku}</td>
-      <td className="px-4 py-2">{date}</td>
-      <td className="px-4 py-2">${price.toFixed(2)}</td>
-      <td className="px-4 py-2">{order}</td>
+      <td className="px-4 py-2">{id}</td>
+      <td className="px-4 py-2">{amount.toFixed(2)}</td>
+      <td className="px-4 py-2">{type}</td>
+      <td className="px-4 py-2">{createdAt}</td>
+      <td className="px-4 py-2">{description}</td>
+      <th>
+        <div className="flex gap-2">
+          <button className="btn btn-sm btn-square btn-outline">
+            <span className="material-symbols-outlined">edit</span>
+          </button>
+          <button className="btn btn-sm btn-error btn-square">
+            <span className="material-symbols-outlined">delete</span>
+          </button>
+        </div>
+      </th>
     </tr>
   );
 };
