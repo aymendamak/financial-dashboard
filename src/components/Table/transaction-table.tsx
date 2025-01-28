@@ -52,10 +52,13 @@ const TransactionTr = ({
       <td className="px-4 py-2">{description}</td>
       <th>
         <div className="flex gap-2">
-          <button className="btn btn-sm btn-square btn-outline">
+          <button className="btn btn-sm btn-primary btn-square btn-outline">
+            <span className="material-symbols-outlined">draft</span>
+          </button>
+          <button className="btn btn-sm btn-info btn-square btn-outline">
             <span className="material-symbols-outlined">edit</span>
           </button>
-          <button className="btn btn-sm btn-error btn-square">
+          <button className="btn btn-sm btn-error btn-square btn-outline">
             <span className="material-symbols-outlined">delete</span>
           </button>
         </div>
