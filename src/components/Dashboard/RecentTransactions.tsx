@@ -28,6 +28,21 @@ const RecentTransactions = () => {
     ]);
   };
 
+  const deleteTransaction = async (id: number) => {
+    const response = await fetch(
+      `http://localhost:3000/api/v1/transaction/${id}`,
+      { method: "DELETE" }
+    );
+
+    if (response.ok) {
+      const updatedTransactions = transactions.filter(
+        (transaction) => transaction.id !== id
+      );
+
+      setTransactions(updatedTransactions);
+    }
+  };
+
   return (
     <div className="col-span-12 p-4 rounded border border-stone-300">
       <TransactionModal addNewTransaction={addNewTransaction} />
@@ -42,7 +57,10 @@ const RecentTransactions = () => {
       </div>
 
       <div className="overflow-x-auto">
-        <TransactionsTable data={transactions} />
+        <TransactionsTable
+          data={transactions}
+          deleteTransaction={deleteTransaction}
+        />
       </div>
     </div>
   );

@@ -47,56 +47,58 @@ const TransactionModal = ({ addNewTransaction }: TransactionModalProps) => {
   return (
     <>
       <dialog id="my_modal_4" className="modal">
-        <div className="flex gap-4 flex-col modal-box max-w-2xl bg-gray-100">
+        <div className="modal-box max-w-2xl bg-gray-100">
           <form action={formAction}>
-            <label className="input input-bordered flex bg-white items-center gap-2 shadow-sm ">
-              <span className="material-symbols-outlined text-black">
-                payments
-              </span>
-              <input
-                type="text"
-                className="w-full"
-                placeholder="Amount"
-                id="amount"
-                name="amount"
+            <div className="flex gap-4 flex-col ">
+              <label className="input input-bordered flex bg-white items-center gap-2 shadow-sm ">
+                <span className="material-symbols-outlined text-black">
+                  payments
+                </span>
+                <input
+                  type="text"
+                  className="w-full"
+                  placeholder="Amount"
+                  id="amount"
+                  name="amount"
+                  required
+                />
+              </label>
+
+              <select
+                className="select select-bordered w-full bg-white shadow-sm"
                 required
-              />
-            </label>
+                id="type"
+                name="type"
+              >
+                <option selected>Income</option>
+                <option>Expense</option>
+              </select>
+              <label className="input input-bordered flex items-center gap-2 bg-white shadow-sm">
+                <span className="material-symbols-outlined text-black">
+                  format_align_justify
+                </span>
+                <input
+                  type="text"
+                  className="grow"
+                  placeholder="Description"
+                  id="description"
+                  name="description"
+                />
+              </label>
 
-            <select
-              className="select select-bordered w-full bg-white shadow-sm"
-              required
-              id="type"
-              name="type"
-            >
-              <option selected>Income</option>
-              <option>Expense</option>
-            </select>
-            <label className="input input-bordered flex items-center gap-2 bg-white shadow-sm">
-              <span className="material-symbols-outlined text-black">
-                format_align_justify
-              </span>
-              <input
-                type="text"
-                className="grow"
-                placeholder="Description"
-                id="description"
-                name="description"
-              />
-            </label>
-
-            <div className="modal-action">
-              <div className="flex gap-2">
-                <button
-                  type="button"
-                  className="btn btn-ghost text-black"
-                  onClick={closeModal}
-                >
-                  Close
-                </button>
-                <button type="submit" className="btn btn-info text-white">
-                  Primary
-                </button>
+              <div className="modal-action">
+                <div className="flex gap-2">
+                  <button
+                    type="button"
+                    className="btn btn-ghost text-black"
+                    onClick={closeModal}
+                  >
+                    Close
+                  </button>
+                  <button type="submit" className="btn btn-info text-white">
+                    Primary
+                  </button>
+                </div>
               </div>
             </div>
           </form>
