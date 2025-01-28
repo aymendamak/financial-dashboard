@@ -1,9 +1,10 @@
 import { useEffect, useState } from "react";
 import TransactionsTable from "../Table/transaction-table";
 import TransactionModal from "../Modals/transaction-modal";
+import Transaction from "../../models/transactions";
 
 const RecentTransactions = () => {
-  const [transactions, setTransactions] = useState([]);
+  const [transactions, setTransactions] = useState<Transaction[]>([]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -20,9 +21,16 @@ const RecentTransactions = () => {
     document?.getElementById("my_modal_4")?.showModal();
   };
 
+  const addNewTransaction = (newTransaction: Transaction) => {
+    setTransactions((prevTransactions) => [
+      ...prevTransactions,
+      newTransaction,
+    ]);
+  };
+
   return (
     <div className="col-span-12 p-4 rounded border border-stone-300">
-      <TransactionModal />
+      <TransactionModal addNewTransaction={addNewTransaction} />
       <div className="mb-4 flex items-center justify-between">
         <h3 className="flex items-center gap-1.5"></h3>
         <button

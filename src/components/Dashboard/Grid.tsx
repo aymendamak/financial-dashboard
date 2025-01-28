@@ -1,7 +1,6 @@
 import ActivityGraph from "./ActivityGraph";
 import RecentTransactions from "./RecentTransactions";
 import StatCards from "./StatCards";
-import UsageRadar from "./UsageRadar";
 
 const Grid = () => {
   return (
@@ -9,7 +8,6 @@ const Grid = () => {
       <StatCards />
 
       <ActivityGraph />
-      <UsageRadar />
       <RecentTransactions />
     </div>
   );
