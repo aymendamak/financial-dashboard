@@ -1,6 +1,7 @@
 import React, { Dispatch } from "react";
 import { useActionState, useFormStatus } from "react";
 import Transaction from "../../models/transactions";
+import MyButton from "../Buttons/primary-button";
 
 interface TransactionModalProps {
   addNewTransaction: (newTransaction: Transaction) => void;
@@ -88,16 +89,20 @@ const TransactionModal = ({ addNewTransaction }: TransactionModalProps) => {
 
               <div className="modal-action">
                 <div className="flex gap-2">
-                  <button
+                  <MyButton
+                    title="Close"
                     type="button"
-                    className="btn btn-ghost text-black"
                     onClick={closeModal}
-                  >
-                    Close
-                  </button>
-                  <button type="submit" className="btn btn-info text-white">
-                    Primary
-                  </button>
+                    textColour="text-black"
+                    btnVariant="btn-ghost"
+                  />
+                  <MyButton
+                    title="Create"
+                    type="submit"
+                    onClick={closeModal}
+                    textColour="text-white"
+                    btnVariant="btn-info"
+                  />
                 </div>
               </div>
             </div>
