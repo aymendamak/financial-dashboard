@@ -17,13 +17,6 @@ const StatCards = () => {
         trend="up"
         period="From Jan 1st - Jul 31st"
       />
-      <Card
-        title="Gross Revenue"
-        value="$120,054.24"
-        pillText="2.75%"
-        trend="down"
-        period="From Jan 1st - Jul 31st"
-      />
     </>
   );
 };

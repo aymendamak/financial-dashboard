@@ -49,7 +49,7 @@ const RecentTransactions = () => {
       <div className="mb-4 flex items-center justify-between">
         <h3 className="flex items-center gap-1.5"></h3>
         <button
-          className="btn btn-ghost"
+          className="btn bg-stone-100 text-black hover:bg-stone-300 border-none"
           onClick={() => showTransactionModal()}
         >
           <span className="material-symbols-outlined">add</span>New Transaction
