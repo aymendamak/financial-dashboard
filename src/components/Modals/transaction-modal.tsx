@@ -87,8 +87,8 @@ const TransactionModal = ({ addNewTransaction }: TransactionModalProps) => {
                 />
               </label>
 
-              <div className="modal-action">
-                <div className="flex gap-2">
+              <div className="modal-action flex justify-end gap-2 w-full">
+                <div className="flex">
                   <MyButton
                     title="Close"
                     type="button"
@@ -96,12 +96,14 @@ const TransactionModal = ({ addNewTransaction }: TransactionModalProps) => {
                     textColour="text-black"
                     btnVariant="btn-ghost"
                   />
+                </div>
+                <div className="flex-grow-2">
                   <MyButton
                     title="Create"
                     type="submit"
                     onClick={closeModal}
-                    textColour="text-white"
-                    btnVariant="btn-info"
+                    textColour="text-black"
+                    btnVariant="btn-accent"
                   />
                 </div>
               </div>
