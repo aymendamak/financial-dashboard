@@ -24,46 +24,48 @@ const UpdateTransactionModal = ({
       }
     };
 
+    console.log("transactionData", transactionData);
+
     window.addEventListener("keydown", handleEscape);
 
     return () => {
       window.removeEventListener("keydown", handleEscape);
     };
-  }, []);
+  });
 
-  const closeModal = () => {
-    document?.getElementById("update-transaction-modal")?.close();
-  };
+  useEffect(() => {
+    setAmount(transactionData?.amount);
+    setType(transactionData?.type);
+    setDescription(transactionData?.description);
+  }, [transactionData]);
 
-  const updateTransaction = () => {
-    const updateTransaction = async () => {
-      const newTransaction = {
-        amount,
-        type,
-        description,
-        id: transactionData?.id,
-        createdAt: transactionData?.createdAt,
-        updatedAt: new Date().toISOString(),
-      };
-      const updatedTransaction = await fetch(
-        `http://localhost:3000/api/v1/transaction/${transactionData?.id}`,
-        {
-          method: "PUT",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(newTransaction),
-        }
-      );
-
-      if (updatedTransaction.ok) {
-        const updatedTransactionJson = await updatedTransaction.json();
-        if (updatedTransaction) updateTransactions(updatedTransactionJson);
-      } else {
-        console.error("Failed to update transaction");
-      }
+  const updateTransaction = async () => {
+    const newTransaction = {
+      amount,
+      type,
+      description,
+      id: transactionData?.id,
+      createdAt: transactionData?.createdAt,
+      updatedAt: new Date().toISOString(),
     };
-    updateTransaction();
+    const updatedTransaction = await fetch(
+      `http://localhost:3000/api/v1/transaction/${transactionData?.id}`,
+      {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(newTransaction),
+      }
+    );
+
+    if (updatedTransaction.ok) {
+      const updatedTransactionJson = await updatedTransaction.json();
+      if (updatedTransaction && updateTransactions)
+        updateTransactions(updatedTransactionJson);
+    } else {
+      console.error("Failed to update transaction");
+    }
   };
 
   return (
@@ -72,79 +74,81 @@ const UpdateTransactionModal = ({
       className="modal"
       key={transactionData?.id}
     >
-      <div className="modal-box max-w-2xl bg-gray-100">
-        <form
-          onSubmit={(e) => {
-            e.preventDefault();
-            updateTransaction();
-          }}
-        >
-          <div className="flex gap-4 flex-col ">
-            <label className="input input-bordered flex bg-white items-center gap-2 shadow-sm ">
-              <span className="material-symbols-outlined text-black">
-                payments
-              </span>
-              <input
-                type="text"
-                className="w-full"
-                placeholder="Amount"
-                id="amount"
-                name="amount"
-                value={amount}
-                onChange={(e) => setAmount(parseFloat(e.target.value))}
+      {"transactionData " + transactionData?.id}
+      {transactionData && (
+        <div className="modal-box max-w-2xl bg-gray-100">
+          <form
+            onSubmit={(e) => {
+              e.preventDefault();
+              updateTransaction();
+            }}
+          >
+            <div className="flex gap-4 flex-col ">
+              <label className="input input-bordered flex bg-white items-center gap-2 shadow-sm ">
+                <span className="material-symbols-outlined text-black">
+                  payments
+                </span>
+                <input
+                  type="text"
+                  className="w-full"
+                  placeholder="Amount"
+                  id="amount"
+                  name="amount"
+                  value={amount}
+                  onChange={(e) => setAmount(parseFloat(e.target.value))}
+                  required
+                />
+              </label>
+
+              <select
+                className="select select-bordered w-full bg-white shadow-sm"
                 required
-              />
-            </label>
-
-            <select
-              className="select select-bordered w-full bg-white shadow-sm"
-              required
-              id="type"
-              name="type"
-              value={type}
-              onChange={(e) => setType(e.target.value)}
-            >
-              <option>Income</option>
-              <option>Expense</option>
-            </select>
-            <label className="input input-bordered flex items-center gap-2 bg-white shadow-sm">
-              <span className="material-symbols-outlined text-black">
-                format_align_justify
-              </span>
-              <input
-                type="text"
-                className="grow"
-                placeholder="Description"
-                id="description"
-                name="description"
-                value={description}
-                onChange={(e) => setDescription(e.target.value)}
-              />
-            </label>
-
-            <div className="modal-action flex justify-end w-full">
-              <div className="flex">
-                <MyButton
-                  title="Close"
-                  type="button"
-                  onClick={closeModal}
-                  textColour="text-black"
-                  btnVariant="btn-ghost"
+                id="type"
+                name="type"
+                value={type}
+                onChange={(e) => setType(e.target.value)}
+              >
+                <option>Income</option>
+                <option>Expense</option>
+              </select>
+              <label className="input input-bordered flex items-center gap-2 bg-white shadow-sm">
+                <span className="material-symbols-outlined text-black">
+                  format_align_justify
+                </span>
+                <input
+                  type="text"
+                  className="grow"
+                  placeholder="Description"
+                  id="description"
+                  name="description"
+                  value={description}
+                  onChange={(e) => setDescription(e.target.value)}
                 />
-              </div>
-              <div className="flex-grow-2">
-                <MyButton
-                  title="Update"
-                  type="submit"
-                  onClick={closeModal}
-                  textColour="text-black"
-                  btnVariant="btn-accent"
-                />
+              </label>
+
+              <div className="modal-action flex justify-end w-full">
+                <div className="flex">
+                  <MyButton
+                    title="Close"
+                    type="button"
+                    onClick={onCloseModal}
+                    textColour="text-black"
+                    btnVariant="btn-ghost"
+                  />
+                </div>
+                <div className="flex-grow-2">
+                  <MyButton
+                    title="Update"
+                    type="submit"
+                    textColour="text-black"
+                    btnVariant="btn-accent"
+                  />
+                </div>
               </div>
             </div>
-          </div>
-        </form>
-      </div>
+          </form>
+        </div>
+      )}
     </dialog>
   );
 };

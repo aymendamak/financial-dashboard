@@ -1,5 +1,5 @@
 interface MyButtonProps {
-  onClick: () => void;
+  onClick?: () => void;
   title: string;
   type: "button" | "submit";
   textColour?: string;

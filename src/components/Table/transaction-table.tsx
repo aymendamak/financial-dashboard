@@ -26,12 +26,14 @@ const TransactionsTable = ({
     setDisplayModal(true);
     setDisplayUpdateModal(false);
     setTransactionData(item);
+    setTransactionUpdateData(null);
   };
 
   const handleClickUpdateTransactionData = (item: Transaction) => {
     setDisplayUpdateModal(true);
     setDisplayModal(false);
     setTransactionUpdateData(item);
+    setTransactionData(null);
   };
 
   useEffect(() => {

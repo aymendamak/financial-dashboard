@@ -12,7 +12,7 @@ const ConsultTransactionModal = ({
   onCloseModal,
 }: ConsultTransactionModalProps) => {
   useEffect(() => {
-    const handleEscape = (event) => {
+    const handleEscape = (event: KeyboardEvent) => {
       if (event.key === "Escape") {
         onCloseModal();
       }
