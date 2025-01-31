@@ -1,4 +1,4 @@
-import { useActionState, useEffect, useState } from "react";
+import { use, useActionState, useState } from "react";
 import Transaction from "../../models/transactions";
 import MyButton from "../Buttons/primary-button";
 
@@ -11,38 +11,28 @@ interface CreateTransactionModalProps {
 const CreateTransactionModal = ({
   addNewTransaction,
 }: CreateTransactionModalProps) => {
-  const [state, formAction] = useActionState(
-    async (prevState, formData) => {
-      const amount = parseFloat(formData.get("amount"));
-      const type = formData.get("type");
-      const description = formData.get("description");
+  const [amount, setAmount] = useState("");
+  const [type, setType] = useState("Income");
+  const [description, setDescription] = useState("");
 
-      console.log(amount, type, description);
-
-      const response = await fetch(
-        "http://localhost:3000/api/v1/transaction/create",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ amount, type, description }),
-        }
-      );
-
-      if (response.ok) {
-        const newTransaction = await response.json();
-        // Assuming you have a state to manage the list of transactions
-        addNewTransaction(newTransaction);
-        document?.getElementById("create-transaction-modal")?.close();
-      } else {
-        console.error("Failed to create transaction");
+  const createNewTransaction = async () => {
+    const newTransaction = { amount, type, description };
+    const response = await fetch(
+      "http://localhost:3000/api/v1/transaction/create",
+      {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(newTransaction),
       }
-
-      return { amount, type, description };
-    },
-    { amount: 0, type: "Income", description: "" }
-  );
+    );
+    if (response.ok) {
+      const newTransaction = await response.json();
+      addNewTransaction(newTransaction);
+      document?.getElementById("create-transaction-modal")?.close();
+    } else {
+      console.error("Failed to create transaction");
+    }
+  };
 
   const closeModal = () => {
     document?.getElementById("create-transaction-modal")?.close();
@@ -51,7 +41,12 @@ const CreateTransactionModal = ({
   return (
     <dialog id="create-transaction-modal" className="modal">
       <div className="modal-box max-w-2xl bg-gray-100">
-        <form action={formAction}>
+        <form
+          onSubmit={(e) => {
+            e.preventDefault();
+            createNewTransaction();
+          }}
+        >
           <div className="flex gap-4 flex-col ">
             <label className="input input-bordered flex bg-white items-center gap-2 shadow-sm ">
               <span className="material-symbols-outlined text-black">
@@ -63,6 +58,7 @@ const CreateTransactionModal = ({
                 placeholder="Amount"
                 id="amount"
                 name="amount"
+                onChange={(e) => setAmount(e.target.value)}
                 required
               />
             </label>
@@ -72,6 +68,7 @@ const CreateTransactionModal = ({
               required
               id="type"
               name="type"
+              onChange={(e) => setType(e.target.value)}
             >
               <option>Income</option>
               <option>Expense</option>
@@ -86,6 +83,7 @@ const CreateTransactionModal = ({
                 placeholder="Description"
                 id="description"
                 name="description"
+                onChange={(e) => setDescription(e.target.value)}
               />
             </label>
 
