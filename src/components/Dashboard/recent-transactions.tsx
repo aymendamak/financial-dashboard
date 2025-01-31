@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import TransactionsTable from "../Table/transaction-table";
-import TransactionModal from "../Modals/transaction-modal";
+import CreateTransactionModal from "../Modals/create-transaction";
 import Transaction from "../../models/transactions";
 
 const RecentTransactions = () => {
@@ -18,7 +18,7 @@ const RecentTransactions = () => {
   }, []);
 
   const showTransactionModal = () => {
-    document?.getElementById("my_modal_4")?.showModal();
+    document?.getElementById("create-transaction-modal")?.showModal();
   };
 
   const addNewTransaction = (newTransaction: Transaction) => {
@@ -45,7 +45,7 @@ const RecentTransactions = () => {
 
   return (
     <div className="col-span-12 p-4 rounded border border-stone-300">
-      <TransactionModal addNewTransaction={addNewTransaction} />
+      <CreateTransactionModal addNewTransaction={addNewTransaction} />
       <div className="mb-4 flex items-center justify-between">
         <h3 className="flex items-center gap-1.5"></h3>
         <button
