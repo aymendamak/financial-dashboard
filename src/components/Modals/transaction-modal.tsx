@@ -1,5 +1,4 @@
-import React, { Dispatch } from "react";
-import { useActionState, useFormStatus } from "react";
+import { useActionState } from "react";
 import Transaction from "../../models/transactions";
 import MyButton from "../Buttons/primary-button";
 
@@ -87,7 +86,7 @@ const TransactionModal = ({ addNewTransaction }: TransactionModalProps) => {
                 />
               </label>
 
-              <div className="modal-action flex justify-end gap-2 w-full">
+              <div className="modal-action flex justify-end w-full">
                 <div className="flex">
                   <MyButton
                     title="Close"

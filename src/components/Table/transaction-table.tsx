@@ -33,7 +33,7 @@ const TransactionsTable = ({
               <td className="px-4 py-2">{item.description}</td>
               <th>
                 <div className="flex gap-2">
-                  <button className="btn btn-sm btn-info btn-square btn-outline">
+                  <button className="btn btn-sm btn-ghost btn-square btn-outline">
                     <span className="material-symbols-outlined">draft</span>
                   </button>
                   <button className="btn btn-sm btn-warning btn-square btn-outline">
