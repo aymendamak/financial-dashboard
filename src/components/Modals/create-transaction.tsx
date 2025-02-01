@@ -25,7 +25,6 @@ const CreateTransactionModal = ({
 
   const createNewTransaction = async () => {
     const newTransaction = { amount, type, description, date };
-    console.log(newTransaction);
     const response = await fetch(
       "http://localhost:3000/api/v1/transaction/create",
       {
