@@ -39,25 +39,35 @@ const TransactionsTable = ({
   useEffect(() => {
     if (transactionData) {
       setTransactionUpdateData(null);
-      document.getElementById("consult-transaction-modal")?.showModal();
+      (
+        document.getElementById(
+          "consult-transaction-modal"
+        ) as HTMLDialogElement
+      )?.showModal();
     }
   }, [transactionData]);
 
   useEffect(() => {
     if (transactionUpdateData) {
       setTransactionData(null);
-      document.getElementById("update-transaction-modal")?.showModal();
+      (
+        document.getElementById("update-transaction-modal") as HTMLDialogElement
+      )?.showModal();
     }
   }, [transactionUpdateData]);
 
   const onCloseConsultModal = () => {
-    document?.getElementById("consult-transaction-modal")?.close();
+    (
+      document.getElementById("consult-transaction-modal") as HTMLDialogElement
+    )?.close();
     setTransactionData(null);
     setTransactionUpdateData(null);
   };
 
   const onCloseUpdateModal = () => {
-    document?.getElementById("update-transaction-modal")?.close();
+    (
+      document.getElementById("update-transaction-modal") as HTMLDialogElement
+    )?.close();
     setTransactionData(null);
     setTransactionUpdateData(null);
   };

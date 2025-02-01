@@ -2,9 +2,15 @@ import { useEffect, useState } from "react";
 import TransactionsTable from "../Table/transaction-table";
 import CreateTransactionModal from "../Modals/create-transaction";
 import Transaction from "../../models/transactions";
+import MyButton from "../Buttons/primary-button";
 
 const RecentTransactions = () => {
   const [transactions, setTransactions] = useState<Transaction[]>([]);
+
+  const [filteredTransactions, setFilteredTransactions] = useState<
+    Transaction[]
+  >([]);
+  const [filteredType, setFilteredType] = useState<string>("ALL");
 
   useEffect(() => {
     const fetchData = async () => {
@@ -13,12 +19,15 @@ const RecentTransactions = () => {
       );
       const data = await response.json();
       setTransactions(data);
+      setFilteredTransactions(data);
     };
     fetchData();
   }, []);
 
   const showTransactionModal = () => {
-    document?.getElementById("create-transaction-modal")?.showModal();
+    (
+      document?.getElementById("create-transaction-modal") as HTMLDialogElement
+    )?.showModal();
   };
 
   const addNewTransaction = (newTransaction: Transaction) => {
@@ -26,6 +35,18 @@ const RecentTransactions = () => {
       ...prevTransactions,
       newTransaction,
     ]);
+  };
+
+  const filterTransactions = (type: string) => {
+    if (type === "ALL") {
+      setFilteredTransactions(transactions);
+    } else {
+      const filtered = transactions.filter(
+        (elt) => elt.type.toUpperCase() === type.toUpperCase()
+      );
+      setFilteredTransactions(filtered);
+    }
+    setFilteredType(type);
   };
 
   const deleteTransaction = async (id: number) => {
@@ -47,7 +68,36 @@ const RecentTransactions = () => {
     <div className="col-span-12 p-4 rounded border border-stone-300">
       <CreateTransactionModal addNewTransaction={addNewTransaction} />
       <div className="mb-4 flex items-center justify-between">
-        <h3 className="flex items-center gap-1.5"></h3>
+        <div className="flex items-center gap-1.5">
+          <MyButton
+            title="All"
+            type="button"
+            textColour="text-black"
+            btnVariant={
+              "btn-ghost " + (filteredType === "ALL" ? "bg-stone-200" : "")
+            }
+            onClick={() => filterTransactions("ALL")}
+          />
+          <MyButton
+            title="Income"
+            type="button"
+            textColour="text-black"
+            btnVariant={
+              "btn-ghost " + (filteredType === "INCOME" ? "bg-stone-200" : "")
+            }
+            onClick={() => filterTransactions("INCOME")}
+          />
+          <MyButton
+            title="Expense"
+            type="button"
+            textColour="text-black"
+            btnVariant={
+              "btn-ghost " + (filteredType === "EXPENSE" ? "bg-stone-200" : "")
+            }
+            onClick={() => filterTransactions("EXPENSE")}
+          />
+        </div>
+        <div className="divider divider-horizontal"></div>
         <button
           className="btn bg-stone-100 text-black hover:bg-stone-300 border-none"
           onClick={() => showTransactionModal()}
@@ -58,7 +108,7 @@ const RecentTransactions = () => {
 
       <div className="overflow-x-auto">
         <TransactionsTable
-          data={transactions}
+          data={filteredTransactions}
           deleteTransaction={deleteTransaction}
         />
       </div>

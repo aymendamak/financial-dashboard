@@ -1,4 +1,4 @@
-import { use, useActionState, useState } from "react";
+import { useState } from "react";
 import Transaction from "../../models/transactions";
 import MyButton from "../Buttons/primary-button";
 
@@ -27,15 +27,23 @@ const CreateTransactionModal = ({
     );
     if (response.ok) {
       const newTransaction = await response.json();
-      addNewTransaction(newTransaction);
-      document?.getElementById("create-transaction-modal")?.close();
+      if (addNewTransaction) {
+        addNewTransaction(newTransaction);
+      }
+      (
+        document?.getElementById(
+          "create-transaction-modal"
+        ) as HTMLDialogElement
+      )?.close();
     } else {
       console.error("Failed to create transaction");
     }
   };
 
   const closeModal = () => {
-    document?.getElementById("create-transaction-modal")?.close();
+    (
+      document?.getElementById("create-transaction-modal") as HTMLDialogElement
+    )?.close();
   };
 
   return (
