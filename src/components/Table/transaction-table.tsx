@@ -105,7 +105,7 @@ const TransactionsTable = ({
             <th className="text-start p-1.5">Transaction ID</th>
             <th className="text-start p-1.5">Amount</th>
             <th className="text-start p-1.5">Type</th>
-            <th className="text-start p-1.5">Created At</th>
+            <th className="text-start p-1.5">Date</th>
             <th className="text-start p-1.5">Description</th>
             <th className="text-start p-1.5">Actions</th>
             <th className="w-8"></th>
@@ -117,7 +117,7 @@ const TransactionsTable = ({
               <td className="px-4 py-2">{item.id}</td>
               <td className="px-4 py-2">{item.amount.toFixed(2)}</td>
               <td className="px-4 py-2">{item.type}</td>
-              <td className="px-4 py-2">{item.createdAt}</td>
+              <td className="px-4 py-2">{item.date}</td>
               <td className="px-4 py-2">{item.description}</td>
               <th>
                 <div className="flex gap-2">

@@ -13,10 +13,11 @@ const CreateTransactionModal = ({
 }: CreateTransactionModalProps) => {
   const [amount, setAmount] = useState("");
   const [type, setType] = useState("Income");
+  const [date, setDate] = useState("");
   const [description, setDescription] = useState("");
 
   const createNewTransaction = async () => {
-    const newTransaction = { amount, type, description };
+    const newTransaction = { amount, type, description, date };
     const response = await fetch(
       "http://localhost:3000/api/v1/transaction/create",
       {
@@ -81,6 +82,22 @@ const CreateTransactionModal = ({
               <option>Income</option>
               <option>Expense</option>
             </select>
+
+            <label className="input input-bordered flex bg-white items-center gap-2 shadow-sm ">
+              <span className="material-symbols-outlined text-black">
+                calendar_month
+              </span>
+              <input
+                type="date"
+                className="w-full"
+                placeholder="Transaction's date"
+                id="date"
+                name="date"
+                onChange={(e) => setDate(e.target.value)}
+                required
+              />
+            </label>
+
             <label className="input input-bordered flex items-center gap-2 bg-white shadow-sm">
               <span className="material-symbols-outlined text-black">
                 format_align_justify

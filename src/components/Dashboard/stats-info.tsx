@@ -12,7 +12,7 @@ const StatsData = () => {
       setStatsData(data);
     };
     fetchData();
-  });
+  }, []);
 
   return (
     <>

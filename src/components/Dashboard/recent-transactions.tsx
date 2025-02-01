@@ -31,10 +31,16 @@ const RecentTransactions = () => {
   };
 
   const addNewTransaction = (newTransaction: Transaction) => {
+    console.log("addNewTransaction", newTransaction);
     setTransactions((prevTransactions) => [
       ...prevTransactions,
       newTransaction,
     ]);
+    setFilteredTransactions((prevTransactions) => [
+      ...prevTransactions,
+      newTransaction,
+    ]);
+    filterTransactions(filteredType);
   };
 
   const filterTransactions = (type: string) => {
