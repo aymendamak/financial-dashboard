@@ -1,41 +1,18 @@
-import React from "react";
+interface StatsCardProps {
+  title: string;
+  value: string;
+  pillText: string;
+  trend: "UP" | "DOWN";
+  period: string;
+}
 
-const StatCards = () => {
-  return (
-    <>
-      <Card
-        title="Gross Revenue"
-        value="$120,054.24"
-        pillText="2.75%"
-        trend="up"
-        period="From Jan 1st - Jul 31st"
-      />
-      <Card
-        title="Gross Revenue"
-        value="$120,054.24"
-        pillText="2.75%"
-        trend="up"
-        period="From Jan 1st - Jul 31st"
-      />
-    </>
-  );
-};
-
-export default StatCards;
-
-const Card = ({
+const StatsCard = ({
   title,
   value,
   pillText,
   trend,
   period,
-}: {
-  title: string;
-  value: string;
-  pillText: string;
-  trend: "up" | "down";
-  period: string;
-}) => {
+}: StatsCardProps) => {
   return (
     <div className="p-4 col-span-4 rounded border border-stone-300">
       <div className="flex mb-8 items-start justify-between">
@@ -46,12 +23,12 @@ const Card = ({
 
         <span
           className={`text-xs flex items-center gap-1 font-medium px-1.5 py-1 rounded ${
-            trend === "up"
+            trend === "UP"
               ? "bg-green-100 text-green-700"
               : "bg-red-100 text-red-700"
           } `}
         >
-          {trend === "up" ? (
+          {trend === "UP" ? (
             <span className="material-symbols-outlined">trending_up</span>
           ) : (
             <span className="material-symbols-outlined">trending_down</span>
@@ -64,3 +41,5 @@ const Card = ({
     </div>
   );
 };
+
+export default StatsCard;
