@@ -24,6 +24,10 @@ const RecentTransactions = () => {
     fetchData();
   }, []);
 
+  useEffect(() => {
+    filterTransactions(filteredType);
+  }, [transactions]);
+
   const showTransactionModal = () => {
     (
       document?.getElementById("create-transaction-modal") as HTMLDialogElement
@@ -36,11 +40,6 @@ const RecentTransactions = () => {
       ...prevTransactions,
       newTransaction,
     ]);
-    setFilteredTransactions((prevTransactions) => [
-      ...prevTransactions,
-      newTransaction,
-    ]);
-    filterTransactions(filteredType);
   };
 
   const filterTransactions = (type: string) => {

@@ -16,6 +16,13 @@ const CreateTransactionModal = ({
   const [date, setDate] = useState("");
   const [description, setDescription] = useState("");
 
+  const resetForm = () => {
+    setAmount("");
+    setType("Income");
+    setDate("");
+    setDescription("");
+  };
+
   const createNewTransaction = async () => {
     const newTransaction = { amount, type, description, date };
     const response = await fetch(
@@ -28,6 +35,7 @@ const CreateTransactionModal = ({
     );
     if (response.ok) {
       const newTransaction = await response.json();
+      resetForm();
       if (addNewTransaction) {
         addNewTransaction(newTransaction);
       }
