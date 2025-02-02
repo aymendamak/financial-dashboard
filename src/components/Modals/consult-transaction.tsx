@@ -62,6 +62,14 @@ const ConsultTransactionModal = ({
               </span>
             </div>
 
+            <div className="flex items-center gap-2">
+              <span className="material-symbols-outlined text-black">
+                calendar_month
+              </span>
+              <span className="font-semibold">Date:</span>
+              <span className="text-lg">{transactionData.date}</span>
+            </div>
+
             <div className="flex items-start gap-2">
               <span className="material-symbols-outlined text-gray-600 mt-1">
                 format_align_justify
