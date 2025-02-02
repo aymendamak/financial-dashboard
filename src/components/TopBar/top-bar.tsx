@@ -6,7 +6,7 @@ const TopBar = () => {
       <div className="flex items-center justify-between p-0.5">
         <div>
           <span className="text-md font-bold block">
-            Good morning,{" "}
+            Welcome Back,{" "}
             <span className="font-bold text-cyan-500 ">Aymen</span> !
           </span>
           <span className="text-sm block text-stone-500">

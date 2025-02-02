@@ -73,7 +73,7 @@ const RecentTransactions = () => {
     <div className="col-span-12 p-4 rounded border border-stone-300">
       <CreateTransactionModal addNewTransaction={addNewTransaction} />
       <div className="mb-4 flex items-center justify-between">
-        <div className="flex items-center gap-1.5">
+        <div className="flex items-center gap-1.5 rounded-md shadow-sm bg-stone-100">
           <MyButton
             title="All"
             type="button"
@@ -102,7 +102,6 @@ const RecentTransactions = () => {
             onClick={() => filterTransactions("EXPENSE")}
           />
         </div>
-        <div className="divider divider-horizontal"></div>
         <button
           className="btn bg-stone-100 text-black hover:bg-stone-300 border-none"
           onClick={() => showTransactionModal()}
