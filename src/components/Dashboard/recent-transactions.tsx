@@ -11,6 +11,7 @@ const RecentTransactions = () => {
     Transaction[]
   >([]);
   const [filteredType, setFilteredType] = useState<string>("ALL");
+  const [filteredDate, setFilteredDate] = useState<string>("");
 
   useEffect(() => {
     const fetchData = async () => {
@@ -26,7 +27,7 @@ const RecentTransactions = () => {
 
   useEffect(() => {
     filterTransactions(filteredType);
-  }, [transactions]);
+  }, [transactions, filteredDate]);
 
   const showTransactionModal = () => {
     (
@@ -43,13 +44,22 @@ const RecentTransactions = () => {
   };
 
   const filterTransactions = (type: string) => {
-    if (type === "ALL") {
-      setFilteredTransactions(transactions);
+    let tmpFilteredTransactions: Transaction[] = [];
+    if (filteredDate !== "") {
+      tmpFilteredTransactions = transactions.filter(
+        (elt) => elt.date <= filteredDate
+      );
     } else {
-      const filtered = transactions.filter(
+      tmpFilteredTransactions = transactions;
+    }
+
+    if (type === "ALL") {
+      setFilteredTransactions(tmpFilteredTransactions);
+    } else {
+      const newFilteredTransactions = tmpFilteredTransactions.filter(
         (elt) => elt.type.toUpperCase() === type.toUpperCase()
       );
-      setFilteredTransactions(filtered);
+      setFilteredTransactions(newFilteredTransactions);
     }
     setFilteredType(type);
   };
@@ -69,45 +79,87 @@ const RecentTransactions = () => {
     }
   };
 
+  const resetFilters = () => {
+    setFilteredDate("");
+    setFilteredType("ALL");
+    (document.getElementById("inf_date") as HTMLInputElement).value = "";
+  };
+
   return (
     <div className="col-span-12 p-4 rounded border border-stone-300">
       <CreateTransactionModal addNewTransaction={addNewTransaction} />
-      <div className="mb-4 flex items-center justify-between">
-        <div className="flex items-center gap-1.5 rounded-md shadow-sm bg-stone-100">
-          <MyButton
-            title="All"
-            type="button"
-            textColour="text-black"
-            btnVariant={
-              "btn-ghost " + (filteredType === "ALL" ? "bg-stone-200" : "")
-            }
-            onClick={() => filterTransactions("ALL")}
-          />
-          <MyButton
-            title="Income"
-            type="button"
-            textColour="text-black"
-            btnVariant={
-              "btn-ghost " + (filteredType === "INCOME" ? "bg-stone-200" : "")
-            }
-            onClick={() => filterTransactions("INCOME")}
-          />
-          <MyButton
-            title="Expense"
-            type="button"
-            textColour="text-black"
-            btnVariant={
-              "btn-ghost " + (filteredType === "EXPENSE" ? "bg-stone-200" : "")
-            }
-            onClick={() => filterTransactions("EXPENSE")}
-          />
+      <div className=" flex flex-row justify-between ">
+        <div className="mb-4 flex items-center gap-4">
+          <div className="flex items-center gap-1.5 rounded-md shadow-sm bg-stone-100">
+            <MyButton
+              title="All"
+              type="button"
+              textColour="text-black"
+              btnVariant={
+                "btn-ghost " + (filteredType === "ALL" ? "bg-stone-200" : "")
+              }
+              onClick={() => filterTransactions("ALL")}
+            />
+            <MyButton
+              title="Income"
+              type="button"
+              textColour="text-black"
+              btnVariant={
+                "btn-ghost " + (filteredType === "INCOME" ? "bg-stone-200" : "")
+              }
+              onClick={() => filterTransactions("INCOME")}
+            />
+            <MyButton
+              title="Expense"
+              type="button"
+              textColour="text-black"
+              btnVariant={
+                "btn-ghost " +
+                (filteredType === "EXPENSE" ? "bg-stone-200" : "")
+              }
+              onClick={() => filterTransactions("EXPENSE")}
+            />
+          </div>
+          <div className="">
+            <label className="input flex items-center rounded-md bg-stone-100 text-black">
+              <span className="material-symbols-outlined text-black">
+                calendar_month
+              </span>
+              <input
+                type="date"
+                className="w-full"
+                placeholder="Transaction's date"
+                id="inf_date"
+                name="inf_date"
+                onChange={(e) => setFilteredDate(e.target.value)}
+                required
+              />
+            </label>
+          </div>
         </div>
-        <button
-          className="btn bg-stone-100 text-black hover:bg-stone-300 border-none"
-          onClick={() => showTransactionModal()}
-        >
-          <span className="material-symbols-outlined">add</span>New Transaction
-        </button>
+
+        <div className="mb-4 flex flex-row items-center gap-1">
+          <div className="flex items-center ">
+            <MyButton
+              type="button"
+              textColour="text-black"
+              btnVariant={"btn-ghost bg-stone-100 "}
+              icon="close"
+              onClick={() => resetFilters()}
+            />
+          </div>
+
+          <div className="divider lg:divider-horizontal"></div>
+          <div className="flex items-center justify-end">
+            <button
+              className="btn bg-stone-100 text-black hover:bg-stone-300 border-none"
+              onClick={() => showTransactionModal()}
+            >
+              <span className="material-symbols-outlined">add</span>New
+              Transaction
+            </button>
+          </div>
+        </div>
       </div>
 
       <div className="overflow-x-auto">

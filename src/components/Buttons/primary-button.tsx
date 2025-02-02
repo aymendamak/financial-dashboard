@@ -1,9 +1,10 @@
 interface MyButtonProps {
   onClick?: () => void;
-  title: string;
+  title?: string;
   type: "button" | "submit";
   textColour?: string;
   btnVariant?: string;
+  icon?: string;
 }
 
 const MyButton = ({
@@ -12,6 +13,7 @@ const MyButton = ({
   type,
   textColour,
   btnVariant,
+  icon,
 }: MyButtonProps) => {
   return (
     <button
@@ -24,6 +26,8 @@ const MyButton = ({
       }
       onClick={onClick}
     >
+      {icon && <span className="material-symbols-outlined">{icon}</span>}
+
       {title}
     </button>
   );
