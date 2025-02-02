@@ -13,6 +13,7 @@ const RecentTransactions = () => {
   const [filteredType, setFilteredType] = useState<string>("ALL");
   const [fromDate, setFromDate] = useState<string>("");
   const [toDate, setToDate] = useState<string>("");
+  const [filterAmount, setFilterAmount] = useState<number | null>(0);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -28,7 +29,7 @@ const RecentTransactions = () => {
 
   useEffect(() => {
     filterTransactions(filteredType);
-  }, [transactions, fromDate, toDate, filteredType]);
+  }, [transactions, fromDate, toDate, filteredType, filterAmount]);
 
   const showTransactionModal = () => {
     (
@@ -52,10 +53,15 @@ const RecentTransactions = () => {
       );
     }
 
-    console.log("toDate", toDate);
     if (toDate !== "") {
       tmpFilteredTransactions = tmpFilteredTransactions.filter(
         (elt) => elt.date <= toDate
+      );
+    }
+
+    if (filterAmount) {
+      tmpFilteredTransactions = tmpFilteredTransactions.filter(
+        (elt) => elt.amount >= filterAmount
       );
     }
 
@@ -88,6 +94,7 @@ const RecentTransactions = () => {
   const resetFilters = () => {
     setFromDate("");
     setToDate("");
+    setFilterAmount(null);
     setFilteredType("ALL");
     (document.getElementById("from_date") as HTMLInputElement).value = "";
     (document.getElementById("to_date") as HTMLInputElement).value = "";
@@ -96,9 +103,16 @@ const RecentTransactions = () => {
   return (
     <div className="col-span-12 p-4 rounded border border-stone-300">
       <CreateTransactionModal addNewTransaction={addNewTransaction} />
-      <div className="mb-4 flex flex-row justify-between ">
-        <div className="flex items-center gap-4">
-          <div className="flex items-center gap-1.5 rounded-md shadow-sm bg-stone-100 p-2">
+      <div className="mb-4 flex flex-col md:flex-row justify-between gap-4">
+        <div className="flex flex-col md:flex-row items-center gap-4">
+          <MyButton
+            type="button"
+            textColour="text-black"
+            btnVariant="btn-ghost bg-stone-100"
+            icon="close"
+            onClick={resetFilters}
+          />
+          <div className="flex items-center gap-1 rounded-md shadow-sm bg-stone-100 p-1">
             {["ALL", "INCOME", "EXPENSE"].map((type) => (
               <MyButton
                 key={type}
@@ -112,13 +126,13 @@ const RecentTransactions = () => {
               />
             ))}
           </div>
-          <div className="flex items-center gap-2 rounded-md shadow-sm bg-stone-100 p-2">
+          <div className="flex flex-col md:flex-row items-center rounded-md shadow-sm bg-stone-100 p-1">
             {["From", "To"].map((label) => (
               <label
                 key={label}
                 className="input flex items-center rounded-md bg-stone-100 text-black"
               >
-                <h3 className="pr-2">{label}</h3>
+                <h3 className="pr-1">{label}</h3>
                 <span className="material-symbols-outlined text-black">
                   calendar_month
                 </span>
@@ -138,17 +152,28 @@ const RecentTransactions = () => {
               </label>
             ))}
           </div>
+          <div className="flex rounded-md shadow-sm bg-stone-100 p-1 w-36 ">
+            <label
+              key="amount_more_than"
+              className="input flex items-center rounded-md bg-stone-100 text-black gap-2"
+            >
+              <span className="material-symbols-outlined text-black">
+                payments
+              </span>
+              <input
+                type="input"
+                className="w-full"
+                placeholder="1000.00"
+                id="amount_more_than"
+                name="amount_more_than"
+                onChange={(e) => setFilterAmount(Number(e.target.value))}
+                required
+              />
+            </label>
+          </div>
         </div>
 
         <div className="flex items-center gap-4">
-          <MyButton
-            type="button"
-            textColour="text-black"
-            btnVariant="btn-ghost bg-stone-100"
-            icon="close"
-            onClick={resetFilters}
-          />
-          <div className="divider lg:divider-horizontal"></div>
           <button
             className="btn bg-stone-100 text-black hover:bg-stone-300 border-none flex items-center gap-2"
             onClick={showTransactionModal}
