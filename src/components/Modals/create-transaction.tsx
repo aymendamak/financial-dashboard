@@ -50,7 +50,7 @@ const CreateTransactionModal = ({
     )?.close();
   };
 
-  const handFormSubmit = (e) => {
+  const handFormSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     myForm = new FormData(e.currentTarget);
     const newTransaction: Transaction = {
