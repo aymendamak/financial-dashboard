@@ -1,4 +1,3 @@
-import { useState } from "react";
 import Transaction from "../../models/transactions";
 import MyButton from "../Buttons/primary-button";
 
@@ -11,20 +10,16 @@ interface CreateTransactionModalProps {
 const CreateTransactionModal = ({
   addNewTransaction,
 }: CreateTransactionModalProps) => {
-  const [amount, setAmount] = useState("");
-  const [type, setType] = useState("Income");
-  const [date, setDate] = useState("");
-  const [description, setDescription] = useState("");
+  let myForm = new FormData();
 
   const resetForm = () => {
-    setAmount("");
-    setType("Income");
-    setDate("");
-    setDescription("");
+    (document.getElementById("amount") as HTMLInputElement).value = "";
+    (document.getElementById("type") as HTMLSelectElement).value = "";
+    (document.getElementById("date") as HTMLInputElement).value = "";
+    (document.getElementById("description") as HTMLInputElement).value = "";
   };
 
-  const createNewTransaction = async () => {
-    const newTransaction = { amount, type, description, date };
+  const createNewTransaction = async (newTransaction: Transaction) => {
     const response = await fetch(
       "http://localhost:3000/api/v1/transaction/create",
       {
@@ -55,15 +50,24 @@ const CreateTransactionModal = ({
     )?.close();
   };
 
+  const handFormSubmit = (e) => {
+    e.preventDefault();
+    myForm = new FormData(e.currentTarget);
+    const newTransaction: Transaction = {
+      id: Math.random(),
+      amount: Number(myForm.get("amount")),
+      type: myForm.get("type") as string,
+      date: myForm.get("date") as string,
+      createdAt: new Date().toString(),
+      description: myForm.get("description") as string,
+    };
+    createNewTransaction(newTransaction);
+  };
+
   return (
     <dialog id="create-transaction-modal" className="modal">
       <div className="modal-box max-w-2xl bg-gray-100">
-        <form
-          onSubmit={(e) => {
-            e.preventDefault();
-            createNewTransaction();
-          }}
-        >
+        <form onSubmit={handFormSubmit}>
           <div className="flex gap-4 flex-col ">
             <label className="input input-bordered flex bg-white items-center gap-2 shadow-sm ">
               <span className="material-symbols-outlined text-black">
@@ -75,7 +79,6 @@ const CreateTransactionModal = ({
                 placeholder="Amount"
                 id="amount"
                 name="amount"
-                onChange={(e) => setAmount(e.target.value)}
                 required
               />
             </label>
@@ -85,7 +88,6 @@ const CreateTransactionModal = ({
               required
               id="type"
               name="type"
-              onChange={(e) => setType(e.target.value)}
             >
               <option>Income</option>
               <option>Expense</option>
@@ -101,7 +103,6 @@ const CreateTransactionModal = ({
                 placeholder="Transaction's date"
                 id="date"
                 name="date"
-                onChange={(e) => setDate(e.target.value)}
                 required
               />
             </label>
@@ -116,7 +117,6 @@ const CreateTransactionModal = ({
                 placeholder="Description"
                 id="description"
                 name="description"
-                onChange={(e) => setDescription(e.target.value)}
               />
             </label>
 
