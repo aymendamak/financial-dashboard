@@ -13,6 +13,7 @@ const UpdateTransactionModal = ({
   transactionData,
   onCloseModal,
 }: UpdateTransactionModalProps) => {
+  let myForm = new FormData();
   const [amount, setAmount] = useState(transactionData?.amount);
   const [type, setType] = useState(transactionData?.type);
   const [description, setDescription] = useState(transactionData?.description);
@@ -39,15 +40,7 @@ const UpdateTransactionModal = ({
     setDescription(transactionData?.description);
   }, [transactionData]);
 
-  const updateTransaction = async () => {
-    const newTransaction = {
-      amount,
-      type,
-      description,
-      id: transactionData?.id,
-      createdAt: transactionData?.createdAt,
-      updatedAt: new Date().toISOString(),
-    };
+  const updateTransaction = async (newTransaction: Transaction) => {
     const updatedTransaction = await fetch(
       `http://localhost:3000/api/v1/transaction/${transactionData?.id}`,
       {
@@ -68,6 +61,20 @@ const UpdateTransactionModal = ({
     }
   };
 
+  const handleFormSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    myForm = new FormData(e.currentTarget);
+    const updatedTransaction: Transaction = {
+      id: Math.random(),
+      amount: Number(myForm.get("amount")),
+      type: myForm.get("type") as string,
+      date: myForm.get("date") as string,
+      createdAt: new Date().toString(),
+      description: myForm.get("description") as string,
+    };
+    updateTransaction(updatedTransaction);
+  };
+
   return (
     <dialog
       id="update-transaction-modal"
@@ -77,12 +84,7 @@ const UpdateTransactionModal = ({
       {"transactionData " + transactionData?.id}
       {transactionData && (
         <div className="modal-box max-w-2xl bg-gray-100">
-          <form
-            onSubmit={(e) => {
-              e.preventDefault();
-              updateTransaction();
-            }}
-          >
+          <form onSubmit={handleFormSubmit}>
             <div className="flex gap-4 flex-col ">
               <label className="input input-bordered flex bg-white items-center gap-2 shadow-sm ">
                 <span className="material-symbols-outlined text-black">

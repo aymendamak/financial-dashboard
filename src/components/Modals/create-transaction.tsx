@@ -50,7 +50,7 @@ const CreateTransactionModal = ({
     )?.close();
   };
 
-  const handFormSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleFormSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     myForm = new FormData(e.currentTarget);
     const newTransaction: Transaction = {
@@ -67,7 +67,7 @@ const CreateTransactionModal = ({
   return (
     <dialog id="create-transaction-modal" className="modal">
       <div className="modal-box max-w-2xl bg-gray-100">
-        <form onSubmit={handFormSubmit}>
+        <form onSubmit={handleFormSubmit}>
           <div className="flex gap-4 flex-col ">
             <label className="input input-bordered flex bg-white items-center gap-2 shadow-sm ">
               <span className="material-symbols-outlined text-black">
