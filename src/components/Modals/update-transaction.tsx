@@ -14,8 +14,10 @@ const UpdateTransactionModal = ({
   onCloseModal,
 }: UpdateTransactionModalProps) => {
   let myForm = new FormData();
+
   const [amount, setAmount] = useState(transactionData?.amount);
   const [type, setType] = useState(transactionData?.type);
+  const [date, setDate] = useState(transactionData?.date);
   const [description, setDescription] = useState(transactionData?.description);
 
   useEffect(() => {
@@ -25,20 +27,12 @@ const UpdateTransactionModal = ({
       }
     };
 
-    console.log("transactionData", transactionData);
-
     window.addEventListener("keydown", handleEscape);
 
     return () => {
       window.removeEventListener("keydown", handleEscape);
     };
   });
-
-  useEffect(() => {
-    setAmount(transactionData?.amount);
-    setType(transactionData?.type);
-    setDescription(transactionData?.description);
-  }, [transactionData]);
 
   const updateTransaction = async (newTransaction: Transaction) => {
     const updatedTransaction = await fetch(
@@ -93,11 +87,14 @@ const UpdateTransactionModal = ({
                 <input
                   type="text"
                   className="w-full"
-                  placeholder="Amount"
+                  placeholder={transactionData.amount.toString()}
                   id="amount"
                   name="amount"
                   value={amount}
-                  onChange={(e) => setAmount(parseFloat(e.target.value))}
+                  onChange={(e) => {
+                    myForm.set("amount", e.target.value);
+                    setAmount(parseFloat(e.target.value));
+                  }}
                   required
                 />
               </label>
@@ -108,11 +105,34 @@ const UpdateTransactionModal = ({
                 id="type"
                 name="type"
                 value={type}
-                onChange={(e) => setType(e.target.value)}
+                onChange={(e) => {
+                  myForm.set("type", e.target.value);
+                  setType(e.target.value);
+                }}
               >
-                <option>Income</option>
-                <option>Expense</option>
+                <option value="income">Income</option>
+                <option value="expense">Expense</option>
               </select>
+
+              <label className="input input-bordered flex bg-white items-center gap-2 shadow-sm ">
+                <span className="material-symbols-outlined text-black">
+                  calendar_month
+                </span>
+                <input
+                  type="date"
+                  className="w-full"
+                  placeholder="Transaction's date"
+                  id="date"
+                  name="date"
+                  value={date}
+                  onChange={(e) => {
+                    myForm.set("date", e.target.value);
+                    setDate(e.target.value);
+                  }}
+                  required
+                />
+              </label>
+
               <label className="input input-bordered flex items-center gap-2 bg-white shadow-sm">
                 <span className="material-symbols-outlined text-black">
                   format_align_justify
@@ -124,7 +144,10 @@ const UpdateTransactionModal = ({
                   id="description"
                   name="description"
                   value={description}
-                  onChange={(e) => setDescription(e.target.value)}
+                  onChange={(e) => {
+                    myForm.set("description", e.target.value);
+                    setDescription(e.target.value);
+                  }}
                 />
               </label>
 
